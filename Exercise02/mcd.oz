@@ -27,36 +27,27 @@ in
         operator(type:divide)|{Tokenize T}
       end
     else
-      number(H)|{Tokenize T}
+      number({String.toInt H})|{Tokenize T}
     end
   end
 end
 
 fun {Interpret Tokens}
+  Operations = op(plus:Number.'+'
+    minus:Number.'-'
+    multiply:Number.'*'
+    divide:Int.'div')
   fun {Iterate Stack Tokens}
     case Tokens
     of nil then
       Stack
     [] number(Number)|Tail then
-      {Iterate Number|Stack Tokens}
-    [] operator(Operator)|Tail then
+      {Iterate Number|Stack Tail}
+    [] operator(type:Operator)|Tail then
       Top|NextToTop|Rest = Stack in
-      case Operator
-      of plus then
-        {Iterate Top+NextToTop|Rest Tail}
-      [] minus then
-        {Iterate NextToTop-Top|Rest Tail}
-      [] multiply then
-        {Iterate Top*NextToTop|Rest Tail}
-      [] divide then
-        {Iterate NextToTop/Top|Rest Tail}
-      end
+      {Iterate {Operations.Operator NextToTop Top}|Rest Tail}
     end
   end
 in
-  try
-    {Iterate nil Tokens}
-  catch _ then
-    raise "stack empty" end
-  end
+  {Iterate nil Tokens}
 end
