@@ -9,6 +9,6 @@ define
   Lexemes = {Lex "1 2 3 +"}
   Tokens = {Tokenize Lexemes}
   Interpreted = {Interpret Tokens}
-  /*{System.showInfo Interpreted}
-  */{Exit 0}
+  {System.showInfo {Length Interpreted}}
+  {Exit 0}
 end

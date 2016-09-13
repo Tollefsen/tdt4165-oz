@@ -2,10 +2,11 @@ fun {Lex Input}
   Output
 in
   {String.tokens Input &  Output}
-  {Map Output
+  /*{Map Output
   fun {$ Lexeme}
     {String.toAtom Lexeme}
-  end}
+  end}*/
+  Output
 end
 
 fun {Tokenize Lexemes}
@@ -15,8 +16,8 @@ in
   of nil then
     nil
   [] H|T then
-    if {Member Operators H} then
-      case H
+    if {Member Operators {String.toAtom H}} then
+      case {String.toAtom H}
       of '+' then
         operator(type:plus)|{Tokenize T}
       [] '-' then
@@ -27,7 +28,7 @@ in
         operator(type:divide)|{Tokenize T}
       end
     else
-      number({String.toInt H})|{Tokenize T}
+      number(H)|{Tokenize T}
     end
   end
 end
@@ -42,7 +43,7 @@ fun {Interpret Tokens}
     of nil then
       Stack
     [] number(Number)|Tail then
-      {Iterate Number|Stack Tail}
+      {Iterate {String.toInt Number}|Stack Tail}
     [] operator(type:Operator)|Tail then
       Top|NextToTop|Rest = Stack in
       {Iterate {Operations.Operator NextToTop Top}|Rest Tail}
