@@ -1,3 +1,13 @@
+proc {PrintStack Stack}
+  case Stack
+  of H|T then
+    {System.showInfo H}
+    {PrintStack T}
+  [] nil then
+    skip
+  end
+end
+
 fun {Length List}
   case List of H|T then
     1 + {Length T}
