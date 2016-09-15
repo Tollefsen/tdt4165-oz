@@ -1,10 +1,33 @@
 proc {PrintStack Stack}
   case Stack
   of H|T then
-    {System.showInfo H}
-    {PrintStack T}
+    case H
+    of number(N) then
+      {System.showInfo N}
+      {PrintStack T}
+    [] operator(type:O) then
+      {System.showInfo O}
+      {PrintStack T}
+    [] command(C) then
+      {System.showInfo C}
+      {PrintStack T}
+    else
+      {System.showInfo H}
+      {PrintStack T}
+    end
   [] nil then
     skip
+  [] H then
+  case H
+  of number(N) then
+    {System.showInfo N}
+  [] operator(type:O) then
+    {System.showInfo O}
+  [] command(C) then
+    {System.showInfo C}
+  else
+    {System.showInfo H}
+  end
   end
 end
 
